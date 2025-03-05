@@ -1,0 +1,30 @@
+# .NET Build Artifacts
+bin/
+obj/
+out/
+publish/
+AppPackages/
+ServiceFabricBackup/
+**/bin/
+**/obj/
+
+# .NET Environment and Config
+*.log
+*.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.pidb
+*.psess
+*.vspx
+*.vspf
+*.suo
+*.sln.cache
+*.swp
+
+appsettings.Development.json
+appsettings.json
+logs
