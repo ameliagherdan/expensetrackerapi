@@ -7,4 +7,5 @@ public class User
     public string Name { get; set; } = string.Empty;
     
     public virtual Budget? Budget { get; set; }
+    public virtual Expense[] Expenses { get; set; } = null!;
 }

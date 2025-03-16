@@ -27,7 +27,7 @@ public class ExpenseController : ControllerBase
         var expenses = await _expenseService.GetAllExpensesAsync();
         return Ok(expenses);
     }
-
+    
     /// <summary>
     /// Gets an expense by its ID.
     /// </summary>

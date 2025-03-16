@@ -32,5 +32,10 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Budget>()
             .HasIndex(b => new { b.UserId, b.Month, b.Year })
             .IsUnique();
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Expenses)
+            .WithOne(e => e.User)
+            .HasForeignKey(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

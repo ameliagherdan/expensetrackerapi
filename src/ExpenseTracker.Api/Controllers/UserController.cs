@@ -10,10 +10,14 @@ namespace ExpenseTracker.Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IExpenseService _expenseService;
+    private readonly IBudgetService _budgetService;
     
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IExpenseService expenseService,  IBudgetService budgetService)
     {
         _userService = userService;
+        _expenseService = expenseService;
+        _budgetService = budgetService;
     }
     
     /// <summary>
@@ -91,44 +95,31 @@ public class UserController : ControllerBase
         var deleted = await _userService.DeleteUserAsync(id);
         return deleted ? NoContent() : NotFound($"User with ID {id} not found.");
     }
-
+    
+    
     /// <summary>
-    /// Assigns a budget to a user for a specific month and year.
-    /// </summary>
-    /// <param name="id">The user ID.</param>
-    /// <param name="budgetCreateDto">The budget creation data (Total, Month, and Year).</param>
-    /// <returns>The updated user details with the budget.</returns>
-    [HttpPost("{id}/budget")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> AssignBudget(Guid id, [FromBody] BudgetCreateDto budgetCreateDto)
-    {
-        try
-        {
-            var updatedUser = await _userService.AssignBudgetAsync(id, budgetCreateDto);
-            return Ok(updatedUser);
-        }
-        catch (Exception ex)
-        {
-            return NotFound(ex.Message);
-        }
-    }
-
-    /// <summary>
-    /// Gets all budgets for a user, ordered by month and year.
+    /// Gets all budgets for a user.
     /// </summary>
     /// <param name="id">The user ID.</param>
     /// <returns>A list of budgets for the user.</returns>
+    [HttpGet("{id}/expenses")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ExpenseDto>))]
+    public async Task<IActionResult> GetExpsnesByUserId(Guid id)
+    {
+        var expenses = await _expenseService.GetAllExpensesAsyncByUserId(id);
+        return Ok(expenses);
+    }
+
+    /// <summary>
+    /// Retrieves budgets by user ID.
+    /// </summary>
+    /// <param name="id">User ID.</param>
+    /// <returns>List of budgets for the specified user.</returns>
     [HttpGet("{id}/budgets")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<BudgetDto>))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetBudgetsByUser(Guid id)
+    public async Task<IActionResult> GetBudgetsByUserId(Guid id)
     {
-        var budgets = await _userService.GetBudgetsByUserAsync(id);
-        if (budgets == null || budgets.Count == 0)
-        {
-            return NotFound($"No budgets found for user with ID {id}.");
-        }
+        var budgets = await _budgetService.GetBudgetsByUserIdAsync(id);
         return Ok(budgets);
     }
 }

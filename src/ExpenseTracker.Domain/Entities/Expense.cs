@@ -8,4 +8,7 @@ public class Expense
     public DateTime Date { get; set; }
     public Guid CategoryId { get; set; }
     public virtual Category Category { get; set; } = null!;
+    
+    public Guid UserId { get; set; }
+    public virtual User User { get; set; } = null!;
 }

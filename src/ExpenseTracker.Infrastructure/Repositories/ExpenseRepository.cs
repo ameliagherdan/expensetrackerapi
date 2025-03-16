@@ -19,7 +19,10 @@ public class ExpenseRepository : IExpenseRepository
     {
         return await _context.Expenses.Include(e=>e.Category).ToListAsync();
     }
-
+    public async Task<List<Expense>> GetExpensesAsyncByUserId(Guid userId)
+    {
+        return await _context.Expenses.Include(e=>e.Category).Where(e => e.UserId == userId).ToListAsync();
+    }
     public async Task<Expense> GetExpenseByIdAsync(Guid id)
     {
         return await _context.Expenses.Include(e=>e.Category).FirstOrDefaultAsync(e => e.Id == id);

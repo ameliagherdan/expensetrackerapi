@@ -23,6 +23,12 @@ public class ExpenseService : IExpenseService
         return _mapper.Map<List<ExpenseDto>>(expenses);
     }
 
+    public async Task<List<ExpenseDto>> GetAllExpensesAsyncByUserId(Guid userId)
+    {
+        var expenses = await _expenseRepository.GetExpenseByIdAsync(userId);
+        return _mapper.Map<List<ExpenseDto>>(expenses);
+    }
+
     public async Task<ExpenseDto> GetExpenseAsyncById(Guid id)
     {
         var expense = await _expenseRepository.GetExpenseByIdAsync(id);

@@ -87,9 +87,14 @@ namespace ExpenseTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Expenses");
                 });
@@ -132,7 +137,15 @@ namespace ExpenseTracker.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ExpenseTracker.Domain.Entities.User", "User")
+                        .WithMany("Expenses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.Category", b =>
@@ -143,6 +156,8 @@ namespace ExpenseTracker.Infrastructure.Migrations
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.User", b =>
                 {
                     b.Navigation("Budget");
+
+                    b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618
         }

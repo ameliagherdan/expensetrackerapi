@@ -3,8 +3,6 @@ using ExpenseTracker.Domain.Entities;
 using ExpenseTracker.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExpenseTracker.Infrastructure.Repositories;
-
 public class BudgetRepository : IBudgetRepository
 {
     private readonly ApplicationDbContext _context;
@@ -14,7 +12,7 @@ public class BudgetRepository : IBudgetRepository
         _context = context;
     }
 
-    public async Task<Budget> GetBudgetByUserAndDateAsync(Guid userId, int month, int year)
+    public async Task<Budget> GetBudgetByUserMonthYearAsync(Guid userId, int month, int year)
     {
         return await _context.Budgets
             .FirstOrDefaultAsync(b => b.UserId == userId && b.Month == month && b.Year == year);
@@ -24,12 +22,12 @@ public class BudgetRepository : IBudgetRepository
     {
         return await _context.Budgets
             .Where(b => b.UserId == userId)
-            .OrderBy(b => b.Year).ThenBy(b => b.Month)
             .ToListAsync();
     }
 
     public async Task AddBudgetAsync(Budget budget)
     {
+        budget.Id = Guid.NewGuid();
         _context.Budgets.Add(budget);
         await _context.SaveChangesAsync();
     }
@@ -37,6 +35,16 @@ public class BudgetRepository : IBudgetRepository
     public async Task UpdateBudgetAsync(Budget budget)
     {
         _context.Budgets.Update(budget);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteBudgetAsync(Guid id)
+    {
+        var budget = await _context.Budgets.FindAsync(id);
+        if (budget == null)
+            throw new KeyNotFoundException($"Budget with ID '{id}' not found.");
+
+        _context.Budgets.Remove(budget);
         await _context.SaveChangesAsync();
     }
 }

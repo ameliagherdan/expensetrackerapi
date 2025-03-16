@@ -48,7 +48,7 @@ public class UserService(IUserRepository userRepository, IBudgetRepository budge
             throw new Exception($"User with ID {userId} not found.");
         }
         
-        var existingBudget = await _budgetRepository.GetBudgetByUserAndDateAsync(userId, budgetCreateDto.Month, budgetCreateDto.Year);
+        var existingBudget = await _budgetRepository.GetBudgetByUserMonthYearAsync(userId, budgetCreateDto.Month, budgetCreateDto.Year);
         if (existingBudget != null)
         {
             existingBudget.Total = budgetCreateDto.Total;
