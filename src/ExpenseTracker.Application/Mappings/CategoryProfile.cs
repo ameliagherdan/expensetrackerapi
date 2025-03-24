@@ -8,6 +8,7 @@ public class CategoryProfile : Profile
 {
     public CategoryProfile()
     {
+        CreateMap<CreateCategoryDto, Category>();
         CreateMap<Category, CategoryDto>()
             .ReverseMap()
             .ForMember(dest => dest.Expenses, opt => opt.Ignore());

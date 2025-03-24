@@ -26,6 +26,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task AddCategoryAsync(Category category)
     {
+        category.Id = Guid.NewGuid();
         await _context.Categories.AddAsync(category);
         await _context.SaveChangesAsync();
     }

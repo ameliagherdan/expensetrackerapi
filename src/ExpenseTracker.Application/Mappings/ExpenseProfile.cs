@@ -8,6 +8,8 @@ public class ExpenseProfile : Profile
 {
     public ExpenseProfile()
     {
-        CreateMap<Expense, ExpenseDto>().ReverseMap();
+        CreateMap<Expense, ExpenseDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name)) // <-- Adaugă mapping-ul
+            .ReverseMap();
     }
 }

@@ -43,9 +43,6 @@ namespace ExpenseTracker.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.HasIndex("UserId", "Month", "Year")
                         .IsUnique();
 
@@ -105,6 +102,10 @@ namespace ExpenseTracker.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AzureId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -121,8 +122,8 @@ namespace ExpenseTracker.Infrastructure.Migrations
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.Budget", b =>
                 {
                     b.HasOne("ExpenseTracker.Domain.Entities.User", "User")
-                        .WithOne("Budget")
-                        .HasForeignKey("ExpenseTracker.Domain.Entities.Budget", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -155,8 +156,6 @@ namespace ExpenseTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("ExpenseTracker.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Budget");
-
                     b.Navigation("Expenses");
                 });
 #pragma warning restore 612, 618

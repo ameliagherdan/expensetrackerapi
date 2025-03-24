@@ -50,7 +50,7 @@ public class CategoryController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Guid))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CategoryDto categoryDto)
+    public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryDto)
     {
         if (categoryDto == null)
             return BadRequest("Category data cannot be null.");

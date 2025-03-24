@@ -29,7 +29,7 @@ public class CategoryService : ICategoryService
         return category == null ? null : _mapper.Map<CategoryDto>(category);
     }
 
-    public async Task<CategoryDto> CreateCategoryAsync(CategoryDto categoryDto)
+    public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto categoryDto)
     {
         var category = _mapper.Map<Category>(categoryDto);
         await  _categoryRepository.AddCategoryAsync(category);

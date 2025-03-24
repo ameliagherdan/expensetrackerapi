@@ -104,7 +104,7 @@ public class UserController : ControllerBase
     /// <returns>A list of budgets for the user.</returns>
     [HttpGet("{id}/expenses")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ExpenseDto>))]
-    public async Task<IActionResult> GetExpsnesByUserId(Guid id)
+    public async Task<IActionResult> GetExpensesByUserId(Guid id)
     {
         var expenses = await _expenseService.GetAllExpensesAsyncByUserId(id);
         return Ok(expenses);
